@@ -9,18 +9,22 @@ pub struct TlistTp {
   pub sqlst: String
 }
 
-// Drop and Create sqlite3 data base tables ----------------------------------------
+// Drop and Create sqlite3 data base several tables --------------------------------
 pub fn reset_tables(dbopt: &String, tlist: &Vec<TlistTp>) {
   let cnn = Connection::open(&dbopt).expect("Error opening DB");
   for tabl in tlist {
-    reset_table(&cnn, tabl);
+    cnn.execute(format!("DROP TABLE IF EXISTS {}", tabl.table).as_str(), [])
+      .expect("Error clearing table");
+    cnn.execute(tabl.sqlst.as_str(), []).expect("Error writing on table");
+    println!("Table {} created...", tabl.table);
   }
-  println!("Creation of dabatase {} completed.", dbopt);
 }
 
-pub fn reset_table(cnn: &Connection, tabl: &TlistTp) {
-  cnn.execute(format!("DROP TABLE IF EXISTS {}", tabl.table).as_str(), [])
+// Drop and Create a single sqlite3 data base table --------------------------------
+pub fn reset_table(dbopt: &String, table: &String, sqlst: &String) {
+  let cnn = Connection::open(&dbopt).expect("Error opening DB");
+  cnn.execute(format!("DROP TABLE IF EXISTS {}", table).as_str(), [])
     .expect("Error clearing table");
-  cnn.execute(tabl.sqlst.as_str(), []).expect("Error writing on table");
-  println!("Table {} created...", tabl.table);
+  cnn.execute(sqlst.as_str(), []).expect("Error writing on table");
+  println!("Table {} created.", table);
 }

@@ -27,5 +27,21 @@ pub fn pass_filter(ifilt: &String, filen: &str) -> bool {
   true
 }
 
+// Performs rounding of floating point numbers to specific decimal positions -------
+pub fn rb_round(x: f32, y: u32) -> f32 {
+  let y = 10i32.pow(y) as f32;
+  (x * y).round() / y
+}
+
+// Determines if a number is into one numbers list ---------------------------------
+pub fn contains(s: &Vec<usize>, e: &usize) -> bool {
+  for a in s {
+    if a == e {
+      return true;
+    }
+  }
+  return false;
+}
+
 // Displays the data type of an specific object ------------------------------------
 include!(".\\include\\typeof.rs");
