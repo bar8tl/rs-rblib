@@ -6,6 +6,9 @@ pub fn move_file_wf(mode: &str, curdir: &str, pcddir: &str, filenm: &str,
   let oldnm = format!("{}{}.{}", curdir, filenm, filetp);
   if mode == "inp" {
     let newnm = format!("{}{}.{}", pcddir, filenm, filetp);
-    fs::rename(oldnm, newnm).expect("File rename failure");
+    match fs::rename(oldnm, newnm) {
+      Ok(())  => {},
+      Err(..) => (),
+    }
   }
 }

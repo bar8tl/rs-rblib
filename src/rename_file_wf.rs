@@ -9,5 +9,8 @@ pub fn rename_file_wf(mode: &str, curdir: &str, filenm: &str, filetp: &str) {
   } else if mode == "out" {
     newnm = format!("{}out_{}.{}", curdir, filenm, filetp);
   }
-  fs::rename(oldnm, newnm).expect("File rename failure");
+  match fs::rename(oldnm, newnm) {
+    Ok(())  => {},
+    Err(..) => (),
+  }
 }
